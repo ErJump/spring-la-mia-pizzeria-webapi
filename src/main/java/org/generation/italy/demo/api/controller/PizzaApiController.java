@@ -49,4 +49,11 @@ public class PizzaApiController {
 		} catch(Exception e) {return false; }
 		return true;
 	}
+	
+	@PostMapping("/create")
+	public Pizza createPizza(@Valid @RequestBody Pizza pizza) {
+		System.err.println(pizza);
+		Pizza newPizza = pS.save(pizza);
+		return newPizza;
+	}
 }
