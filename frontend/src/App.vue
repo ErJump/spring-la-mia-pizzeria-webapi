@@ -9,11 +9,12 @@
           <h5 class="card-title">{{ pizza.name }}</h5>
           <h6 class="card-subtitle mb-2 text-muted">{{ pizza.price }} $</h6>
           <p class="card-text">{{ pizza.description }}</p>
-          <button class="btn btn-primary" @click="editPizza(pizza.id)">Modifica</button>
-          <button v-if="!pizza.ingredients" @click="getIngredients(pizza.id)" class="btn btn-success me-2">Ingredienti</button>
-          <ul class="card-text" v-else>
+          <ul class="card-text mb-2" v-if="pizza.ingredients">
             <li v-for="ingredient in pizza.ingredients" :key="ingredient.id">{{ ingredient.name }} </li>
           </ul>
+          <button v-else @click="getIngredients(pizza.id)" class="btn btn-success me-1">Ingredienti</button>
+          <button class="btn btn-primary me-1" @click="editPizza(pizza.id)">Modifica</button>
+          <button class="btn btn-danger me-1" @click="deletePizza(pizza.id)">Elimina</button>
         </div>
         <div v-else class="card-body">
           <form @submit="updatePizza">
@@ -94,6 +95,18 @@ export default {
           const index = this.getPizzaIndexById(pizzaId)
           this.pizzas[index].ingredients = ingredients
           console.log(this.pizzas[index].ingredients)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    deletePizza(pizzaId) {
+      axios.get(this.apiUrl + "pizza/delete/" + pizzaId)
+        .then(response => {
+          const deleted = response.data
+          console.log("deleted: " + deleted)
+          const index = this.getPizzaIndexById(pizzaId)
+          this.pizzas.splice(index, 1)
         })
         .catch(error => {
           console.log(error)
