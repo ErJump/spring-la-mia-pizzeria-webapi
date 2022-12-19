@@ -75,7 +75,10 @@ export default {
 
       axios.post(this.apiUrl + "pizza/update/" + pizzaId, pizza)
         .then(response => {
+          const index = this.getPizzaIndexById(pizzaId)
+          const oldP = this.pizzas[index]
           this.pizzas[pizzaIndex] = response.data
+          this.pizzas[pizzaIndex].ingredients = oldP.ingredients
         })
         .catch(error => {
           console.log(error)
