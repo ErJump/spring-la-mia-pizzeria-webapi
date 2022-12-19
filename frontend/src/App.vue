@@ -1,8 +1,23 @@
 <template>
   <div id="app" class="container-lg">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 mb-3">
         <h1>Pizze</h1>
+      </div>
+      <div class="col-12 mb-2" v-if="!pizzaCreateBool">
+        <button class="btn btn-success me-1" @click="pizzaCreateBool = true">Crea</button>
+      </div>
+      <div class="col-12 mb-4" v-else>
+        <form @submit="createPizza">
+          <label for="name">Nome</label>
+          <input type="text" id="name" name="name" class="form-control mb-2" v-model="newPizzaCreate.name">
+          <label for="price">Prezzo</label>
+          <input type="number" id="price" name="price" class="form-control mb-2" v-model="newPizzaCreate.price">
+          <label for="description">Descrizione</label>
+          <input type="text" id="description" name="description" class="form-control mb-2" v-model="newPizzaCreate.description">
+          <input type="submit" value="Crea" class="btn btn-success me-2">
+          <button @click="pizzaCreateBool = false" class="btn btn-danger">Annulla</button>
+        </form>
       </div>
       <div class="card col-4"  v-for="pizza in pizzas" :key="pizza.id">
         <div class="card-body" v-if="pizzaEditId != pizza.id">
@@ -45,6 +60,8 @@ export default {
       apiUrl: 'http://localhost:8080/api/1/',
       pizzas: [],
       pizzaEditId: pizzaEditIdConst,
+      pizzaCreateBool: false,
+      newPizzaCreate: { },
     }
   },
   methods: {
@@ -107,6 +124,18 @@ export default {
           console.log("deleted: " + deleted)
           const index = this.getPizzaIndexById(pizzaId)
           this.pizzas.splice(index, 1)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    createPizza(e) {
+      e.preventDefault()
+
+      axios.post(this.apiUrl + "pizza/create", this.newPizzaCreate)
+        .then(response => {
+          this.pizzas.push(response.data)
+          this.pizzaCreateBool = false
         })
         .catch(error => {
           console.log(error)
