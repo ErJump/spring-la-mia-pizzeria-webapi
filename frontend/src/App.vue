@@ -4,8 +4,12 @@
       <div class="col-12 mb-3">
         <h1>Pizze</h1>
       </div>
-      <div class="col-12 mb-2" v-if="!pizzaCreateBool">
+      <div class="col-12 mb-2 d-flex justify-content-between" v-if="!pizzaCreateBool">
         <button class="btn btn-success me-1" @click="pizzaCreateBool = true">Crea</button>
+        <div class="d-flex align-items-center">
+          <input type="text" v-model="searchValue" class="form-control d-inline">
+          <a href="#" @click="searchPizza()" class="btn btn-primary">Cerca</a>
+        </div>
       </div>
       <div class="col-12 mb-4" v-else>
         <form @submit="createPizza">
@@ -62,6 +66,7 @@ export default {
       pizzaEditId: pizzaEditIdConst,
       pizzaCreateBool: false,
       newPizzaCreate: { },
+      searchValue: '',
     }
   },
   methods: {
@@ -136,6 +141,19 @@ export default {
         .then(response => {
           this.pizzas.push(response.data)
           this.pizzaCreateBool = false
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    searchPizza() {
+      if (this.searchValue == '') {
+        this.getPizzas()
+        return
+      }
+      axios.get(this.apiUrl + "pizza/search/" + this.searchValue)
+        .then(response => {
+          this.pizzas = response.data
         })
         .catch(error => {
           console.log(error)
