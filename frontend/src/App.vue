@@ -49,6 +49,7 @@
         </div>
       </div>
     </div>
+    <div v-if="check"></div>
   </div>
 </template>
 
@@ -67,6 +68,7 @@ export default {
       pizzaCreateBool: false,
       newPizzaCreate: { },
       searchValue: '',
+      check: false,
     }
   },
   methods: {
@@ -110,6 +112,8 @@ export default {
     getIngredients(pizzaId) {
       axios.get(this.apiUrl + "ingredienti/by/pizza/" + pizzaId)
         .then(response => {
+          this.check = true
+          
           const ingredients = response.data
 
           if (ingredients == null) return
@@ -117,6 +121,7 @@ export default {
           const index = this.getPizzaIndexById(pizzaId)
           this.pizzas[index].ingredients = ingredients
           console.log(this.pizzas[index].ingredients)
+          this.check = false
         })
         .catch(error => {
           console.log(error)
