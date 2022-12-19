@@ -10,6 +10,10 @@
           <h6 class="card-subtitle mb-2 text-muted">{{ pizza.price }} $</h6>
           <p class="card-text">{{ pizza.description }}</p>
           <button class="btn btn-primary" @click="editPizza(pizza.id)">Modifica</button>
+          <button v-if="!pizza.ingredients" @click="getIngredients(pizza.id)" class="btn btn-success me-2">Ingredienti</button>
+          <ul class="card-text" v-else>
+            <li v-for="ingredient in pizza.ingredients" :key="ingredient.id">{{ ingredient.name }} </li>
+          </ul>
         </div>
         <div v-else class="card-body">
           <form @submit="updatePizza">
@@ -72,6 +76,21 @@ export default {
       axios.post(this.apiUrl + "pizza/update/" + pizzaId, pizza)
         .then(response => {
           this.pizzas[pizzaIndex] = response.data
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
+    getIngredients(pizzaId) {
+      axios.get(this.apiUrl + "ingredienti/by/pizza/" + pizzaId)
+        .then(response => {
+          const ingredients = response.data
+
+          if (ingredients == null) return
+          
+          const index = this.getPizzaIndexById(pizzaId)
+          this.pizzas[index].ingredients = ingredients
+          console.log(this.pizzas[index].ingredients)
         })
         .catch(error => {
           console.log(error)
