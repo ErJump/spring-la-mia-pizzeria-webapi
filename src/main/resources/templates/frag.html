@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<header th:fragment="header()" class="mb-5">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light px-5">
+		  <a class="navbar-brand" href="#">Pizze & Cazzottis</a>
+		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+		    <span class="navbar-toggler-icon"></span>
+		  </button>
+		  <div>
+		  	<span>Utente: </span><span sec:authentication="principal.authorities"></span>
+		  </div>
+		  <div class="collapse navbar-collapse" id="navbarNav">
+		    <ul class="navbar-nav">
+		      <li class="nav-item">
+		      	<a th:href="@{/pizza/user}" class="px-3">Home</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/pizza/admin/create}" sec:authorize="hasAuthority('ADMIN')" class="px-3">Aggiungi una pizza</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/drink}" class="px-3">Drinks</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/drink/create}" sec:authorize="hasAuthority('ADMIN')" class="px-3">Aggiungi un nuovo drink</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/product/search}"  class="px-3">Ricerca prodotti</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/product/priceable}" class="px-3">Priceable</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/promotion}" class="px-3">Promozioni</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/ingredient}" class="px-3">Ingredienti</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/login}" class="px-3">Login</a>
+		      </li>
+		      <li class="nav-item">
+		        <a th:href="@{/logout}" class="px-3">Logout</a>
+		      </li>
+		    </ul>
+		  </div>
+		</nav>
+    </header>
+</body>
+</html>
