@@ -40,4 +40,13 @@ public class PizzaApiController {
 		
 		return pS.getPizzaById(id).get(); 
 	}
+	
+	@GetMapping("/delete/{id}")
+	public boolean deletePizza(@PathVariable("id") int id) {
+		
+		try {
+			pS.deletePizzaById(id);
+		} catch(Exception e) {return false; }
+		return true;
+	}
 }
